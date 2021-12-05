@@ -1,0 +1,16 @@
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\SeaBattle.exe
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\SeaBattle.deps.json
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\SeaBattle.runtimeconfig.json
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\SeaBattle.runtimeconfig.dev.json
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\SeaBattle.dll
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\ref\SeaBattle.dll
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\bin\Debug\net5.0\SeaBattle.pdb
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.csproj.AssemblyReference.cache
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.AssemblyInfoInputs.cache
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.AssemblyInfo.cs
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.csproj.CoreCompileInputs.cache
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.dll
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\ref\SeaBattle.dll
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.pdb
+C:\Users\med05\source\repos\SeaBattle\SeaBattle\obj\Debug\net5.0\SeaBattle.genruntimeconfig.cache
