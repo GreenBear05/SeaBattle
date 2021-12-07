@@ -89,60 +89,45 @@ namespace SeaBattle {
                 coorMarkupFild = MarkupFilde.IndxValue<string>(coord[1].ToString().ToUpper());
                 coordinates = Convert.ToInt32(coord[0].ToString());
 
-            
-            
-            if(fieldWang[coorMarkupFild, coordinates] == "~" || fieldWang[coorMarkupFild, coordinates] == "X") {
-                Console.WriteLine("Вы уже стреляли туда выберите другое место");
-                Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
-            } else {
                 switch(fieldwang[coorMarkupFild, coordinates]) {
                     case "*":
-                    Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]} мимо");
-                    fieldWang[coorMarkupFild, coordinates] = "~";
-                    break;
+                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]} мимо");
+                        fieldWang[coorMarkupFild, coordinates]="~";
+                        break;
+                    case "~":
+                        Console.WriteLine("Вы уже стреляли туда выберите другое место");
+                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        break;
                     case "#":
-                    Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
-                    fieldwang[coorMarkupFild, coordinates] = "X";
-                    fieldWang[coorMarkupFild, coordinates] = "X";
-                    break;
+                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        fieldwang[coorMarkupFild, coordinates]="X";
+                        fieldWang[coorMarkupFild, coordinates]="X";
+                        break;
+                    case "X":
+                        Console.WriteLine("Вы уже стреляли туда выберите другое место");
+                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        break;
                     default:
-                    Console.WriteLine("Ведите нормальные координаты");
-                    break;
+                        Console.WriteLine("Ведите нормальные координаты");
+                        break;
                 }
-            }
+            
             }
             catch(Exception) {
 
                 Console.WriteLine("введите кородинаты верно");
             }
-            //if(fieldWang[coorMarkupFild, coordinates] == "~" || fieldWang[coorMarkupFild, coordinates] == "X") {
-            //    Console.WriteLine("Вы уже стреляли туда выберите вругое место");
-            //    Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
-            //} else {
-            //    if(fieldwang[coorMarkupFild, coordinates] != "*") {
-            //        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
-            //        fieldwang[coorMarkupFild, coordinates] = "X";
-            //        fieldWang[coorMarkupFild, coordinates] = "X";
-            //    } else {
-            //        fieldWang[coorMarkupFild, coordinates] = "~";
-            //        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldWang[coorMarkupFild, coordinates]}");
-            //    }
-            //}
-            Console.Clear();
+           
             if(fieldCutting) {
                 FieldCutting();
             }
-            
-
         }
         int logint = 0;
         void Logs(string log) {
             Console.CursorLeft = 60;
             Console.CursorTop = logint;
             Console.WriteLine(log);
-            Console.CursorLeft = 0;
-            Console.CursorTop = 12;
-
+         
             logint++;
         }
     }
