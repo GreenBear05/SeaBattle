@@ -7,6 +7,8 @@ namespace SeaBattle {
 
             Battleground battleground = new Battleground();
             battleground.Preparation();
+            battleground.Battle();
+            
             Console.ReadKey();
         }
        

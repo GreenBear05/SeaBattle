@@ -6,24 +6,25 @@ using System.Threading.Tasks;
 
 namespace SeaBattle {
     public class Battleground {
+        Field fild1 = new Field();
+        Field fild2 = new Field();
         public void Preparation() {
             var sp = new Ships();
-
-            var fild1 = new Field();
-            var fild2 = new Field();
+            
             fild1.NewField(true);
             fild2.NewField(false);
-            fild1.ShipLayout(5, 5, sp.LightShip, Direction.Right);
-            fild2.ShipLayout(5, 5, sp.LightShip, Direction.Right);
-            fild1.Shot(5,5,fild2.field);
-            fild1.Shot(5, 5, fild2.field);
-
-
-
-
-
+            fild1.ShipLayout(5, 5, sp.LightShip, Direction.Right,true);
+            fild2.ShipLayout(5, 5, sp.HShip, Direction.Right,false);
+           
         }
         public void Battle() {
+            while(true) {
+                Console.WriteLine("выстрел игрока1");
+                fild1.Shot(fild2.field,true);
+                Console.WriteLine("выстрел игрока2");
+                fild2.Shot(fild1.field,false);
+                
+            }
 
         }
     }

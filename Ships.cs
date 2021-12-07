@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SeaBattle {
     public class Ships {
-       public string Destroyer = "L";
-       public string LightShip = "LS";
-
+       public string Destroyer = "#";
+       public string LightShip = "##";
+       public string HShip = "###";
 
     }
 }
