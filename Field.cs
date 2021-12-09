@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace SeaBattle {
-    public class Field {
+    public class Field : IXmlSerializable {
+        
         public string[,] field { get; private set; }
-        string[] MarkupFilde = new string[11] { "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+        IList<string> MarkupFilde = new string[11] { "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         string[,] fieldWang;
+
         public void NewField(bool fieldCutting) {
             field = new string[11, 11];
             fieldWang = new string[11, 11];
@@ -39,7 +44,7 @@ namespace SeaBattle {
 
         }
         private void FieldCutting() {
-            Console.Clear();
+
             Console.CursorTop = 0;
             Console.CursorLeft = 0;
             for(int i = 0; i < field.GetLength(1); i++) {
@@ -50,11 +55,11 @@ namespace SeaBattle {
             }
             Console.CursorTop = 0;
             Console.CursorLeft = 30;
-            
+
             for(int i = 0; i < fieldWang.GetLength(1); i++) {
                 for(int j = 0; j < fieldWang.GetLength(0); j++) {
                     Console.Write(fieldWang[i, j] + " ");
-                    
+
                 }
 
                 Console.WriteLine();
@@ -77,58 +82,126 @@ namespace SeaBattle {
             if(fieldCutting) {
                 FieldCutting();
             }
-            
+
         }
         public void Shot(string[,] fieldwang, bool fieldCutting) {
-            
+
             int coordinates = 0;
             int coorMarkupFild = 0;
             try {
-                Console.WriteLine("Введите координаты пример 5J");
+                Log.Write("Введите координаты пример 5J");
+                Console.CursorTop = 13;
                 var coord = Console.ReadLine();
-                coorMarkupFild = MarkupFilde.IndxValue<string>(coord[1].ToString().ToUpper());
+                coorMarkupFild = MarkupFilde.IndexOf(coord[1].ToString().ToUpper());
+
                 coordinates = Convert.ToInt32(coord[0].ToString());
 
                 switch(fieldwang[coorMarkupFild, coordinates]) {
                     case "*":
-                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]} мимо");
-                        fieldWang[coorMarkupFild, coordinates]="~";
+                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]} мимо");
+                        fieldWang[coorMarkupFild, coordinates] = "~";
                         break;
                     case "~":
-                        Console.WriteLine("Вы уже стреляли туда выберите другое место");
-                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        Log.WriteEror("Вы уже стреляли туда выберите другое место");
+                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        Shot(fieldwang, fieldCutting);
                         break;
                     case "#":
-                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
-                        fieldwang[coorMarkupFild, coordinates]="X";
-                        fieldWang[coorMarkupFild, coordinates]="X";
+                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        fieldwang[coorMarkupFild, coordinates] = "X";
+                        fieldWang[coorMarkupFild, coordinates] = "X";
                         break;
                     case "X":
-                        Console.WriteLine("Вы уже стреляли туда выберите другое место");
-                        Logs($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        Log.WriteEror("Вы уже стреляли туда выберите другое место");
+                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        Shot(fieldwang, fieldCutting);
                         break;
                     default:
-                        Console.WriteLine("Ведите нормальные координаты");
+                        Log.WriteEror("Ведите нормальные координаты");
+                        Shot(fieldwang, fieldCutting);
                         break;
                 }
-            
+
             }
             catch(Exception) {
 
-                Console.WriteLine("введите кородинаты верно");
+                Log.WriteEror("введите кородинаты верно");
+                Shot(fieldwang, fieldCutting);
             }
-           
+
             if(fieldCutting) {
                 FieldCutting();
             }
         }
-        int logint = 0;
-        void Logs(string log) {
+
+        public XmlSchema GetSchema() {
+            return (null);
+        }
+        
+       
+        public void ReadXml(XmlReader reader) {
+            XmlSerializerNamespaces xml = new XmlSerializerNamespaces();
+           // xml.
+            field = new string[11, 11];
+            fieldWang = new string[11, 11];
+            for(int i = 1; i < fieldWang.GetLength(1); i++) {
+                for(int j = 1; j < fieldWang.GetLength(0); j++) {
+                    field[i, j] = reader.ReadElementContentAsString("field", "https://docs.microsoft.com/ru-ru/dotnet/api/system.xml.xmlreader.readelementcontentasboolean?view=net-6.0#System_Xml_XmlReader_ReadElementContentAsBoolean_System_String_System_String_");
+                }
+            }
+
+
+
+        }
+
+        public void WriteXml(XmlWriter writer) {
+            
+            foreach(var item in field) {
+                // writer.WriteString(item);
+                writer.WriteElementString("field",item);
+               
+                
+            }
+
+            //foreach(var item in fieldWang) {
+            //    // writer.WriteString(item);
+            //    writer.WriteAttributeString("fieldWang", item);
+
+            //}
+
+        }
+    }
+    public static class Log {
+        static int logint = 0;
+        static int Errorlog = 11;
+        public static void LogsWrite(string log) {
+            var left = Console.CursorLeft;
+            var top = Console.CursorTop;
             Console.CursorLeft = 60;
             Console.CursorTop = logint;
-            Console.WriteLine(log);
-         
+            Console.Write(log);
+            Console.CursorLeft = left;
+            Console.CursorTop = top;
             logint++;
+        }
+        public static void WriteEror(string wri) {
+            var left = Console.CursorLeft;
+            var top = Console.CursorTop;
+            Console.CursorLeft = 30;
+            Console.CursorTop = Errorlog;
+            Console.WriteLine(wri);
+            Console.CursorLeft = left;
+            Console.CursorTop = top;
+        }
+        public static void Write(string wri) {
+            var left = Console.CursorLeft;
+            var top = Console.CursorTop;
+            Console.CursorLeft = 0;
+            Console.CursorTop = 12;
+            Console.Write("");
+            Console.WriteLine(wri);
+            Console.CursorLeft = left;
+            Console.CursorTop = top;
         }
     }
     public enum Direction {
@@ -137,19 +210,5 @@ namespace SeaBattle {
         Right = 1,
         Bottom = 0,
     }
-    public static class Indx {
-        public static int IndxValue<T>(this IEnumerable<string> col, string text) {
-            int ind = 0;
-            foreach(var item in col) {
-                if(item != text) {
-                    ind++;
 
-                } else {
-
-                    break;
-                }
-            }
-            return ind;
-        }
-    }
 }
