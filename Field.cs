@@ -8,8 +8,8 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace SeaBattle {
-    public class Field : IXmlSerializable {
-        
+    public class Field {
+        [XmlNamespaceDeclarations]
         public string[,] field { get; private set; }
         IList<string> MarkupFilde = new string[11] { "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         string[,] fieldWang;
@@ -134,42 +134,6 @@ namespace SeaBattle {
             }
         }
 
-        public XmlSchema GetSchema() {
-            return (null);
-        }
-        
-       
-        public void ReadXml(XmlReader reader) {
-            XmlSerializerNamespaces xml = new XmlSerializerNamespaces();
-           // xml.
-            field = new string[11, 11];
-            fieldWang = new string[11, 11];
-            for(int i = 1; i < fieldWang.GetLength(1); i++) {
-                for(int j = 1; j < fieldWang.GetLength(0); j++) {
-                    field[i, j] = reader.ReadElementContentAsString("field", "https://docs.microsoft.com/ru-ru/dotnet/api/system.xml.xmlreader.readelementcontentasboolean?view=net-6.0#System_Xml_XmlReader_ReadElementContentAsBoolean_System_String_System_String_");
-                }
-            }
-
-
-
-        }
-
-        public void WriteXml(XmlWriter writer) {
-            
-            foreach(var item in field) {
-                // writer.WriteString(item);
-                writer.WriteElementString("field",item);
-               
-                
-            }
-
-            //foreach(var item in fieldWang) {
-            //    // writer.WriteString(item);
-            //    writer.WriteAttributeString("fieldWang", item);
-
-            //}
-
-        }
     }
     public static class Log {
         static int logint = 0;

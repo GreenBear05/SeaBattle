@@ -19,11 +19,7 @@ namespace SeaBattle {
             fild1.ShipLayout(5, 5, sp.LightShip, Direction.Right, true);
             fild2.ShipLayout(5, 5, sp.HShip, Direction.Right, false);
             
-            var ser = new WorkXml<Field>();
-            ser.XmlWrite(fild1);
-            //ser.XmlWrite(fild1);
-            fild1 = ser.XmlRead();
-            //  var ser = new WorkJson<Field>();
+           
 
 
         }
@@ -40,33 +36,28 @@ namespace SeaBattle {
 
         }
     }
-    public class WorkXml<T> {
+
+    public class WorkJson<T> {
         /// <summary>
-        /// Серелизуюет любой обект или массив обектов в типе Xml
+        /// Серелизуюет любой обект или массив обектов в типе JSON
         /// </summary>
-        string Path = @"D:\path.Xml";
-        public WorkXml() { }
-        public WorkXml(string path) {
-            Path=path;
+        string Path = @"D:\path.txt";
+        public WorkJson(string path) {
+            Path = path;
+        }
+        
+        public void JsonWrite(T list) { 
+            var Options = new JsonSerializerOptions() {
+                WriteIndented = true,
+            };
+            var ser = JsonSerializer.Serialize(list,Options);
+            File.WriteAllText(Path,ser);
         }
 
-        public void XmlWrite(T list) {
-         
-            using FileStream file = File.Create(Path);
-            {
-                var ser = new XmlSerializer(typeof(T));
-                ser.Serialize(file, list);
-
-            }
-        }
-        public T XmlRead() {
-            using FileStream file = File.OpenRead(Path);
-            {
-                var ser = new XmlSerializer(typeof(T));
-                 var data = ser.Deserialize(file);
-                return (T)data;
-            }
-
+        public T JsonRead() {
+            var file = File.ReadAllText(Path);
+            var ser = JsonSerializer.Deserialize<T>(file);
+            return ser;
         }
     }
 }
