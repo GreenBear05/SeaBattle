@@ -9,7 +9,7 @@ namespace SeaBattle {
        public string Destroyer = "#";
        public string LightShip = "##";
        public string HShip = "###";
-        public string HhShip = "####";
+       public string HhShip = "####";
 
     }
 }

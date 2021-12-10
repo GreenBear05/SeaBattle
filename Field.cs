@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace SeaBattle {
-    public class Field {
-        [XmlNamespaceDeclarations]
+    public class Field{
+        public event Action<StatisticsEventEnum> StatisticsEvent;
         public string[,] field { get; private set; }
         IList<string> MarkupFilde = new string[11] { "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
         string[,] fieldWang;
 
-        public void NewField(bool fieldCutting) {
+       public Field(bool fieldCutting) {
             field = new string[11, 11];
             fieldWang = new string[11, 11];
             for(int i = 0; i < field.GetLength(1); i++) {
@@ -41,8 +39,8 @@ namespace SeaBattle {
             if(fieldCutting) {
                 FieldCutting();
             }
-
         }
+
         private void FieldCutting() {
 
             Console.CursorTop = 0;
@@ -100,6 +98,7 @@ namespace SeaBattle {
                     case "*":
                         Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]} мимо");
                         fieldWang[coorMarkupFild, coordinates] = "~";
+                        StatisticsEvent?.Invoke(StatisticsEventEnum.slips);
                         break;
                     case "~":
                         Log.WriteEror("Вы уже стреляли туда выберите другое место");
@@ -110,6 +109,7 @@ namespace SeaBattle {
                         Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
                         fieldwang[coorMarkupFild, coordinates] = "X";
                         fieldWang[coorMarkupFild, coordinates] = "X";
+                        StatisticsEvent?.Invoke(StatisticsEventEnum.hitting);
                         break;
                     case "X":
                         Log.WriteEror("Вы уже стреляли туда выберите другое место");
@@ -124,50 +124,35 @@ namespace SeaBattle {
 
             }
             catch(Exception) {
-
                 Log.WriteEror("введите кородинаты верно");
                 Shot(fieldwang, fieldCutting);
             }
-
+            bool victory = false;
+            foreach(var item in fieldwang) {
+                if(item.Contains("#")) {
+                    victory = true;
+                    break; 
+                }
+            }
+            
             if(fieldCutting) {
                 FieldCutting();
+            } else {
+                Console.CursorTop = 0;
+                Console.CursorLeft = 0;
+                for(int i = 0; i < field.GetLength(1); i++) {
+                    for(int j = 0; j < fieldwang.GetLength(0); j++) {
+                        Console.Write(fieldwang[i, j] + " ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.CursorTop = 0;
+                Console.CursorLeft = 30;
             }
         }
-
     }
-    public static class Log {
-        static int logint = 0;
-        static int Errorlog = 11;
-        public static void LogsWrite(string log) {
-            var left = Console.CursorLeft;
-            var top = Console.CursorTop;
-            Console.CursorLeft = 60;
-            Console.CursorTop = logint;
-            Console.Write(log);
-            Console.CursorLeft = left;
-            Console.CursorTop = top;
-            logint++;
-        }
-        public static void WriteEror(string wri) {
-            var left = Console.CursorLeft;
-            var top = Console.CursorTop;
-            Console.CursorLeft = 30;
-            Console.CursorTop = Errorlog;
-            Console.WriteLine(wri);
-            Console.CursorLeft = left;
-            Console.CursorTop = top;
-        }
-        public static void Write(string wri) {
-            var left = Console.CursorLeft;
-            var top = Console.CursorTop;
-            Console.CursorLeft = 0;
-            Console.CursorTop = 12;
-            Console.Write("");
-            Console.WriteLine(wri);
-            Console.CursorLeft = left;
-            Console.CursorTop = top;
-        }
-    }
+   
+    
     public enum Direction {
         X = 1,
         Z = 0,
@@ -175,4 +160,8 @@ namespace SeaBattle {
         Bottom = 0,
     }
 
+}
+public enum StatisticsEventEnum {
+    hitting,
+    slips
 }

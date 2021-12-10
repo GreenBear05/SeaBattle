@@ -7,16 +7,9 @@ namespace SeaBattle {
     public class Program {
         static Battleground battleground = new Battleground();
         static void Main(string[] args) {
-
-           // AppDomain.CurrentDomain.ProcessExit+=CurrentDomain_ProcessExit;
-            
+            // AppDomain.CurrentDomain.ProcessExit+=CurrentDomain_ProcessExit;
             battleground.Preparation();
-            
             battleground.Battle();
-
-
-            
-
 
             Console.ReadKey();
         }
