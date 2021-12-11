@@ -12,15 +12,16 @@ namespace SeaBattle {
         Field fild1 = new Field(true);
         Field fild2 = new Field(false);
         public void Preparation() {
-            Console.WriteLine("Информация\n  Условное обозначение: # корабль \n * неизвесная теретория\n ~ промах\n Х попадение или уничтожение \f");
+            Console.WriteLine("Информация\n  Условное обозначение: # корабль \n * неизвесная теретория\n ~ промах\n Х попадение или уничтожение ");
             Console.ReadKey();
             Console.Clear();
             var sp = new Ships();
             Statistics stat1 = new Statistics(fild1);
            // Statistics stat2 = new Statistics(fild2);
             
-            fild1.ShipLayout(5, 5, sp.LightShip, Direction.Right, true);
-            fild2.ShipLayout(5, 5, sp.HShip, Direction.Right, false);
+            fild1.ShipLayout( sp.LightShip, Direction.Right, true);
+            fild1.ShipLayout(sp.LightShip, Direction.Right, true);
+            fild2.ShipLayout( sp.HShip, Direction.Right, false);
             
 
 

@@ -67,15 +67,39 @@ namespace SeaBattle {
             Console.CursorLeft = 0;
 
         }
-        public void ShipLayout(int x, int y, string ships, Direction direction, bool fieldCutting) {
-            int j = 0;
-            for(int i = x; i < x + ships.Length; i++) {
-                if((direction == Direction.Z) || (direction == Direction.Bottom)) {
-                    field[i, y] = ships[j].ToString();
-                } else {
-                    field[y, i] = ships[j].ToString();
+        public void ShipLayout(string ships, Direction direction, bool fieldCutting) {
+            int coordinates = 0;
+            int coorMarkupFild = 0;
+            bool sost = true;
+            Log.Write("Введите координаты пример 5J чтобы разместить корабль");
+            Console.CursorTop = 13;
+            var coord = Console.ReadLine();
+            coorMarkupFild = MarkupFilde.IndexOf(coord[1].ToString().ToUpper());
+            coordinates = Convert.ToInt32(coord[0].ToString());
+            var mini = coorMarkupFild - 1;
+            var minj = coordinates - 1;
+            var maxi = coorMarkupFild + 1;
+            var maxj = coordinates + ships.Length;
+            for(int i = mini; i < maxi; i++) {
+                for(int j = minj; j < maxj; j++) {
+                    if(field[i, j].Contains("#")) {
+                        var a = false;
+                        break;
+                    }
                 }
-                j++;
+            }
+
+
+            if(sost) {
+
+                for(int i = coordinates; i < coordinates + ships.Length; i++) {
+
+                    if((direction == Direction.Z) || (direction == Direction.Bottom)) {
+                        field[i, coorMarkupFild] = ships[i - coordinates].ToString();
+                    } else {
+                        field[coorMarkupFild, i] = ships[i - coordinates].ToString();
+                    }
+                }
             }
             if(fieldCutting) {
                 FieldCutting();
