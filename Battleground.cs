@@ -9,18 +9,20 @@ using System.Xml.Serialization;
 
 namespace SeaBattle {
     public class Battleground {
-        Field fild1 = new Field(true);
-        Field fild2 = new Field(false);
+       public Field fild1 = new(true);
+       public Field fild2 = new(false);
         public void Preparation() {
             Console.WriteLine("Информация\n  Условное обозначение: # корабль \n * неизвесная теретория\n ~ промах\n Х попадение или уничтожение ");
             Console.ReadKey();
             Console.Clear();
             var sp = new Ships();
             Statistics stat1 = new Statistics(fild1);
-           // Statistics stat2 = new Statistics(fild2);
+            // Statistics stat2 = new Statistics(fild2);
+            while(true) {
+                fild1.ShipLayout(sp.Destroyer, Direction.Right, true);
+                fild1.ShipLayout(sp.LightShip, Direction.Right, true);
+            }
             
-            fild1.ShipLayout( sp.LightShip, Direction.Right, true);
-            fild1.ShipLayout(sp.LightShip, Direction.Right, true);
             fild2.ShipLayout( sp.HShip, Direction.Right, false);
             
 
@@ -30,10 +32,10 @@ namespace SeaBattle {
             while(true) {
                 Console.CursorTop=11;
                 Console.WriteLine("выстрел игрока1");
-                fild1.Shot(fild2.field, true);
+                fild1.Shot(fild2.FieldMat, true);
                 Console.CursorTop=11;
                 Console.WriteLine("выстрел игрока2");
-                fild2.Shot(fild1.field, false);
+                fild2.Shot(fild1.FieldMat, false);
                 
             }
 

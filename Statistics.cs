@@ -8,17 +8,17 @@ namespace SeaBattle {
     public class Statistics {
        public Statistics(Field field){
             field.StatisticsEvent += Field_StatisticsEvent;
-            Log.WriteStat($"Поподание {hitting} Промохи {slips}");
+            Log.WriteStat($"Поподание {Hitting} Промохи {Slips}");
         }
-        public int hitting { get; private set; }
-        public int slips { get; private set; }
+        public int Hitting { get; private set; }
+        public int Slips { get; private set; }
         private void Field_StatisticsEvent(StatisticsEventEnum arg1) {
             if(arg1 == StatisticsEventEnum.hitting) {
-                hitting++;
+                Hitting++;
             } else {
-                slips++;
+                Slips++;
             }
-            Log.WriteStat($"Поподание {hitting} Промохи {slips}");
+            Log.WriteStat($"Поподание {Hitting} Промохи {Slips}");
         }
 
        

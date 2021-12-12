@@ -8,20 +8,20 @@ using System.Text.Json;
 namespace SeaBattle {
     public class Field{
         public event Action<StatisticsEventEnum> StatisticsEvent;
-        public string[,] field { get; private set; }
-        IList<string> MarkupFilde = new string[11] { "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-        string[,] fieldWang;
+        public string[,] FieldMat { get; private set; }
+        private IList<string> MarkupFilde = new string[11] { "0", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
+        private string[,] fieldWang;
 
        public Field(bool fieldCutting) {
-            field = new string[11, 11];
+            FieldMat = new string[11, 11];
             fieldWang = new string[11, 11];
-            for(int i = 0; i < field.GetLength(1); i++) {
-                field[0, i] = $"{i}";
-                field[i, 0] = $"{MarkupFilde[i]}";
+            for(int i = 0; i < FieldMat.GetLength(1); i++) {
+                FieldMat[0, i] = $"{i}";
+                FieldMat[i, 0] = $"{MarkupFilde[i]}";
             }
-            for(int i = 1; i < field.GetLength(1); i++) {
-                for(int j = 1; j < field.GetLength(0); j++) {
-                    field[i, j] = "*";
+            for(int i = 1; i < FieldMat.GetLength(1); i++) {
+                for(int j = 1; j < FieldMat.GetLength(0); j++) {
+                    FieldMat[i, j] = "*";
                 }
             }
             //инцелезация fieldWang
@@ -45,9 +45,9 @@ namespace SeaBattle {
 
             Console.CursorTop = 0;
             Console.CursorLeft = 0;
-            for(int i = 0; i < field.GetLength(1); i++) {
-                for(int j = 0; j < field.GetLength(0); j++) {
-                    Console.Write(field[i, j] + " ");
+            for(int i = 0; i < FieldMat.GetLength(1); i++) {
+                for(int j = 0; j < FieldMat.GetLength(0); j++) {
+                    Console.Write(FieldMat[i, j] + " ");
                 }
                 Console.WriteLine();
             }
@@ -68,43 +68,76 @@ namespace SeaBattle {
 
         }
         public void ShipLayout(string ships, Direction direction, bool fieldCutting) {
-            int coordinates = 0;
-            int coorMarkupFild = 0;
-            bool sost = true;
-            Log.Write("Введите координаты пример 5J чтобы разместить корабль");
-            Console.CursorTop = 13;
-            var coord = Console.ReadLine();
-            coorMarkupFild = MarkupFilde.IndexOf(coord[1].ToString().ToUpper());
-            coordinates = Convert.ToInt32(coord[0].ToString());
-            var mini = coorMarkupFild - 1;
-            var minj = coordinates - 1;
-            var maxi = coorMarkupFild + 1;
-            var maxj = coordinates + ships.Length;
-            for(int i = mini; i < maxi; i++) {
-                for(int j = minj; j < maxj; j++) {
-                    if(field[i, j].Contains("#")) {
-                        var a = false;
+            try {
+                Random r1 = new Random();
+                Random r2 = new Random();
+                //int coordNumerical = r1.Next(1, 10);
+                //int coordMarkupFild = r2.Next(1,10);
+                int coordNumerical = 0;
+                int coordMarkupFild = 0;
+                bool condition = true;
+                Log.Write("Введите координаты пример 5J чтобы разместить корабль");
+                Console.CursorTop = 13;
+                var coordinates = Console.ReadLine();
+
+                foreach(var item in MarkupFilde) {
+                    var charbool = coordinates.EndsWith(item.ToLower());
+                    if(charbool) {
+                        coordMarkupFild = MarkupFilde.IndexOf(item);
+                        coordNumerical = Convert.ToInt32(coordinates.Substring(startIndex: 0, coordinates.Length - 1));
                         break;
                     }
                 }
-            }
+                
+                //проверка теретории границ чтобы поставить кораболь
+                int increaseinspectionarea = 1;
+                var minj = coordMarkupFild - increaseinspectionarea;
+                var maxj = coordMarkupFild;
+                var mini = coordNumerical - increaseinspectionarea;
+                var maxi = coordNumerical;
+                if(!(coordMarkupFild >= 10)) {
+                    maxj += increaseinspectionarea;
+                }
+                if(!(coordNumerical >= 11 - ships.Length)) {
+                    maxi += (ships.Length + increaseinspectionarea);
+                } 
 
-
-            if(sost) {
-
-                for(int i = coordinates; i < coordinates + ships.Length; i++) {
-
-                    if((direction == Direction.Z) || (direction == Direction.Bottom)) {
-                        field[i, coorMarkupFild] = ships[i - coordinates].ToString();
-                    } else {
-                        field[coorMarkupFild, i] = ships[i - coordinates].ToString();
+                for(int i = mini; i <= maxi; i++) {
+                    for(int j = minj; j <= maxj; j++) {
+                        
+                        if(FieldMat[j, i].Contains("#")) {
+                            condition = false;
+                            break;
+                        }
                     }
                 }
+
+                for(int i = coordNumerical; i < coordNumerical + ships.Length; i++) {
+                    condition = FieldMat[i, coordMarkupFild] != null;
+                }
+                    //ставит кораболь по рпзмещенным координатам
+                    if(condition) {
+                    for(int i = coordNumerical; i < coordNumerical + ships.Length; i++) {
+                        
+                        if((direction == Direction.Z) || (direction == Direction.Bottom)) {
+                            FieldMat[i, coordMarkupFild] = ships[i - coordNumerical].ToString();
+                        } else {
+                            FieldMat[coordMarkupFild, i] = ships[i - coordNumerical].ToString();
+                        }
+                    }
+                } else {
+                    Log.WriteEror("выберете другое место");
+                    ShipLayout(ships, direction, fieldCutting);
+                }
+            }
+            catch(Exception) {
+                Log.WriteEror("введите кородинаты верно");
+                ShipLayout(ships, direction, fieldCutting);
             }
             if(fieldCutting) {
                 FieldCutting();
+               
             }
-
         }
         public void Shot(string[,] fieldwang, bool fieldCutting) {
 
@@ -115,7 +148,6 @@ namespace SeaBattle {
                 Console.CursorTop = 13;
                 var coord = Console.ReadLine();
                 coorMarkupFild = MarkupFilde.IndexOf(coord[1].ToString().ToUpper());
-
                 coordinates = Convert.ToInt32(coord[0].ToString());
 
                 switch(fieldwang[coorMarkupFild, coordinates]) {
@@ -164,7 +196,7 @@ namespace SeaBattle {
             } else {
                 Console.CursorTop = 0;
                 Console.CursorLeft = 0;
-                for(int i = 0; i < field.GetLength(1); i++) {
+                for(int i = 0; i < FieldMat.GetLength(1); i++) {
                     for(int j = 0; j < fieldwang.GetLength(0); j++) {
                         Console.Write(fieldwang[i, j] + " ");
                     }
