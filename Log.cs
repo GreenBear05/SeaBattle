@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace SeaBattle {
     public static class Log {
-        static int logint = 0;
-        static int Errorlog = 11;
+      private static int logint = 0;
+      private static int Errorlog = 11;
         public static void LogsWrite(string log) {
             var left = Console.CursorLeft;
             var top = Console.CursorTop;

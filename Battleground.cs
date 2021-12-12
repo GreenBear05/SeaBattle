@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -18,13 +19,31 @@ namespace SeaBattle {
             var sp = new Ships();
             Statistics stat1 = new Statistics(fild1);
             // Statistics stat2 = new Statistics(fild2);
-            while(true) {
-                fild1.ShipLayout(sp.Destroyer, Direction.Right, true);
-                fild1.ShipLayout(sp.LightShip, Direction.Right, true);
-            }
-            
-            fild2.ShipLayout( sp.HShip, Direction.Right, false);
-            
+
+            fild1.ShipLayout(1, 1, sp.Destroyer, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(1, 3, sp.Destroyer, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(1, 5, sp.Destroyer, Direction.Right, true);
+            Thread.Sleep(1000);
+
+            fild1.ShipLayout(1, 7, sp.Destroyer, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(1, 9, sp.LightShip, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(3, 1, sp.LightShip, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(3, 6, sp.LightShip, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(5, 1, sp.HShip, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(5, 5, sp.HShip, Direction.Right, true);
+            Thread.Sleep(1000);
+            fild1.ShipLayout(9, 7, sp.HhShip, Direction.Right, true);
+
+
+            fild2.ShipLayout(5,5, sp.HShip, Direction.Right, false);
+
 
 
         }

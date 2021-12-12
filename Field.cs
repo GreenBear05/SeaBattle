@@ -67,44 +67,43 @@ namespace SeaBattle {
             Console.CursorLeft = 0;
 
         }
-        public void ShipLayout(string ships, Direction direction, bool fieldCutting) {
+        public void ShipLayout(int x, int y, string ships, Direction direction, bool fieldCutting) {
             try {
-                Random r1 = new Random();
-                Random r2 = new Random();
+                //Random r1 = new Random();
+                //Random r2 = new Random();
                 //int coordNumerical = r1.Next(1, 10);
                 //int coordMarkupFild = r2.Next(1,10);
-                int coordNumerical = 0;
-                int coordMarkupFild = 0;
+                int coordNumerical = y;
+                int coordMarkupFild = x;
                 bool condition = true;
-                Log.Write("Введите координаты пример 5J чтобы разместить корабль");
-                Console.CursorTop = 13;
-                var coordinates = Console.ReadLine();
+                //Log.Write("Введите координаты пример 5J чтобы разместить корабль");
+                //Console.CursorTop = 13;
+                //var coordinates = Console.ReadLine();
 
-                foreach(var item in MarkupFilde) {
-                    var charbool = coordinates.EndsWith(item.ToLower());
-                    if(charbool) {
-                        coordMarkupFild = MarkupFilde.IndexOf(item);
-                        coordNumerical = Convert.ToInt32(coordinates.Substring(startIndex: 0, coordinates.Length - 1));
-                        break;
-                    }
-                }
-                
+                //foreach(var item in MarkupFilde) {
+                //    var charbool = coordinates.EndsWith(item.ToLower());
+                //    if(charbool) {
+                //        coordMarkupFild = MarkupFilde.IndexOf(item);
+                //        coordNumerical = Convert.ToInt32(coordinates.Substring(startIndex: 0, coordinates.Length - 1));
+                //        break;
+                //    }
+                //}
+
                 //проверка теретории границ чтобы поставить кораболь
                 int increaseinspectionarea = 1;
                 var minj = coordMarkupFild - increaseinspectionarea;
                 var maxj = coordMarkupFild;
                 var mini = coordNumerical - increaseinspectionarea;
-                var maxi = coordNumerical;
+                var maxi = coordNumerical + ships.Length;
                 if(!(coordMarkupFild >= 10)) {
                     maxj += increaseinspectionarea;
                 }
-                if(!(coordNumerical >= 11 - ships.Length)) {
-                    maxi += (ships.Length + increaseinspectionarea);
+                if(coordNumerical <= 10) {
+                    maxi -= increaseinspectionarea;
                 } 
 
                 for(int i = mini; i <= maxi; i++) {
                     for(int j = minj; j <= maxj; j++) {
-                        
                         if(FieldMat[j, i].Contains("#")) {
                             condition = false;
                             break;
@@ -112,13 +111,15 @@ namespace SeaBattle {
                     }
                 }
 
-                for(int i = coordNumerical; i < coordNumerical + ships.Length; i++) {
-                    condition = FieldMat[i, coordMarkupFild] != null;
+                // TODO - всратый костыль нужно обязательно решить .
+                if( coordNumerical + ships.Length >= 12) {
+                    condition = false;
                 }
-                    //ставит кораболь по рпзмещенным координатам
-                    if(condition) {
+
+                //ставит кораболь по рпзмещенным координатам
+                if(condition) {
                     for(int i = coordNumerical; i < coordNumerical + ships.Length; i++) {
-                        
+
                         if((direction == Direction.Z) || (direction == Direction.Bottom)) {
                             FieldMat[i, coordMarkupFild] = ships[i - coordNumerical].ToString();
                         } else {
@@ -127,16 +128,16 @@ namespace SeaBattle {
                     }
                 } else {
                     Log.WriteEror("выберете другое место");
-                    ShipLayout(ships, direction, fieldCutting);
+                    ShipLayout(x,y,ships, direction, fieldCutting);
                 }
             }
             catch(Exception) {
                 Log.WriteEror("введите кородинаты верно");
-                ShipLayout(ships, direction, fieldCutting);
+                ShipLayout(x, y, ships, direction, fieldCutting);
             }
             if(fieldCutting) {
                 FieldCutting();
-               
+
             }
         }
         public void Shot(string[,] fieldwang, bool fieldCutting) {
