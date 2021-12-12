@@ -142,35 +142,41 @@ namespace SeaBattle {
         }
         public void Shot(string[,] fieldwang, bool fieldCutting) {
 
-            int coordinates = 0;
-            int coorMarkupFild = 0;
+            int coordNumerical = 0;
+            int coordMarkupFild = 0;
             try {
                 Log.Write("Введите координаты пример 5J");
                 Console.CursorTop = 13;
-                var coord = Console.ReadLine();
-                coorMarkupFild = MarkupFilde.IndexOf(coord[1].ToString().ToUpper());
-                coordinates = Convert.ToInt32(coord[0].ToString());
+                var coordinates = Console.ReadLine();
+                foreach(var item in MarkupFilde) {
+                    var charbool = coordinates.EndsWith(item.ToLower());
+                    if(charbool) {
+                        coordMarkupFild = MarkupFilde.IndexOf(item);
+                        coordNumerical = Convert.ToInt32(coordinates.Substring(startIndex: 0, coordinates.Length - 1));
+                        break;
+                    }
+                }
 
-                switch(fieldwang[coorMarkupFild, coordinates]) {
+                switch(fieldwang[coordMarkupFild, coordNumerical]) {
                     case "*":
-                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]} мимо");
-                        fieldWang[coorMarkupFild, coordinates] = "~";
+                        Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]} мимо");
+                        fieldWang[coordMarkupFild, coordNumerical] = "~";
                         StatisticsEvent?.Invoke(StatisticsEventEnum.slips);
                         break;
                     case "~":
                         Log.WriteEror("Вы уже стреляли туда выберите другое место");
-                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]}");
                         Shot(fieldwang, fieldCutting);
                         break;
                     case "#":
-                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
-                        fieldwang[coorMarkupFild, coordinates] = "X";
-                        fieldWang[coorMarkupFild, coordinates] = "X";
+                        Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]}");
+                        fieldwang[coordMarkupFild, coordNumerical] = "X";
+                        fieldWang[coordMarkupFild, coordNumerical] = "X";
                         StatisticsEvent?.Invoke(StatisticsEventEnum.hitting);
                         break;
                     case "X":
                         Log.WriteEror("Вы уже стреляли туда выберите другое место");
-                        Log.LogsWrite($"Выстрел по координатам {coordinates} {MarkupFilde[coorMarkupFild]} результат {fieldwang[coorMarkupFild, coordinates]}");
+                        Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]}");
                         Shot(fieldwang, fieldCutting);
                         break;
                     default:
