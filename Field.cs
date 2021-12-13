@@ -72,12 +72,12 @@ namespace SeaBattle {
                 //Random r1 = new Random();
                 //Random r2 = new Random();
                 //int coordNumerical = r1.Next(1, 10);
-                //int coordMarkupFild = r2.Next(1,10);
+                //int coordMarkupFild = r2.Next(1, 10);
                 int coordNumerical = y;
                 int coordMarkupFild = x;
                 bool condition = true;
-                //Log.Write("Введите координаты пример 5J чтобы разместить корабль");
-                //Console.CursorTop = 13;
+                Log.Write("Введите координаты пример 5J чтобы разместить корабль");
+                Console.CursorTop = 13;
                 //var coordinates = Console.ReadLine();
 
                 //foreach(var item in MarkupFilde) {
@@ -98,12 +98,13 @@ namespace SeaBattle {
                 if(!(coordMarkupFild >= 10)) {
                     maxj += increaseinspectionarea;
                 }
-                if(coordNumerical <= 10) {
+                if((coordNumerical > 10 - ships.Length )) {
                     maxi -= increaseinspectionarea;
                 } 
 
                 for(int i = mini; i <= maxi; i++) {
                     for(int j = minj; j <= maxj; j++) {
+                        FieldMat[j, i] = "&";
                         if(FieldMat[j, i].Contains("#")) {
                             condition = false;
                             break;
@@ -166,7 +167,7 @@ namespace SeaBattle {
                     case "~":
                         Log.WriteEror("Вы уже стреляли туда выберите другое место");
                         Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]}");
-                        Shot(fieldwang, fieldCutting);
+                        Shot( fieldwang, fieldCutting);
                         break;
                     case "#":
                         Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]}");
@@ -177,18 +178,18 @@ namespace SeaBattle {
                     case "X":
                         Log.WriteEror("Вы уже стреляли туда выберите другое место");
                         Log.LogsWrite($"Выстрел по координатам {coordNumerical} {MarkupFilde[coordMarkupFild]} результат {fieldwang[coordMarkupFild, coordNumerical]}");
-                        Shot(fieldwang, fieldCutting);
+                        Shot( fieldwang, fieldCutting);
                         break;
                     default:
                         Log.WriteEror("Ведите нормальные координаты");
-                        Shot(fieldwang, fieldCutting);
+                        Shot( fieldwang, fieldCutting);
                         break;
                 }
 
             }
             catch(Exception) {
                 Log.WriteEror("введите кородинаты верно");
-                Shot(fieldwang, fieldCutting);
+                Shot( fieldwang, fieldCutting);
             }
             bool victory = false;
             foreach(var item in fieldwang) {
